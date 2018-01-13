@@ -15,13 +15,8 @@ var config = viper.New()
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "tcmd",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Telosys Cli in Go",
+	Long:  "Telosys Cli in Go",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -42,13 +37,13 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	rootCmd.PersistentFlags().StringVarP(&homeDir, "home", "", ".", "home folder (default is .)")
-
+	rootCmd.PersistentFlags().StringVar(&homeDir, "home", ".", "home folder (default is .)")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	config.SetConfigFile(homeDir + "/" + configFile)
+	homeDir = toAbs(homeDir)
+	config.SetConfigFile(toPath(configFile))
 
 	config.AutomaticEnv() // read in environment variables that match
 
