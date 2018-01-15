@@ -1,6 +1,6 @@
 package main
 
-import "github.com/ArthurMaury/telosys-cmd/cmd"
+import "github.com/ArthurMaury/tcmd/cmd"
 
 func main() {
 	cmd.Execute()

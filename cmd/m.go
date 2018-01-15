@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -20,12 +19,7 @@ var mCmd = &cobra.Command{
 		if len(args) == 0 {
 			selectModel()
 		} else {
-			if isUnique, modelName := isUniquePossibility(args[0]); isUnique {
-				setModel(modelName)
-			} else {
-				fmt.Println("You didn't pick a correct model, please retry")
-				selectModel()
-			}
+			setModel(args[0])
 		}
 	},
 }
@@ -36,11 +30,14 @@ func init() {
 }
 
 func setModel(name string) {
-	modelExists(name)
-	config.ReadInConfig()
-	config.Set(cfgModel, name)
-	config.WriteConfig()
-	fmt.Println("Model successfully set to", name)
+	if isUnique, modelName := isUniquePossibility(name, validModels); isUnique {
+		config.ReadInConfig()
+		config.Set(cfgModel, modelName)
+		config.WriteConfig()
+		fmt.Println("Model successfully set to", name)
+	} else {
+		fmt.Println("Model doesn't exist")
+	}
 }
 
 func getModels() []string {
@@ -54,40 +51,8 @@ func getModels() []string {
 
 func selectModel() {
 	fmt.Println("Here are the available models:")
-	for _, model := range validModels {
-		fmt.Println(model)
-	}
-	fmt.Print("Choose here: ")
-	var choice string
-	fmt.Scanln(&choice)
-	if isUnique, modelName := isUniquePossibility(choice); isUnique {
-		setModel(modelName)
-	} else {
+	listSelector(validModels, setModel, func() {
 		fmt.Println("You didn't pick a correct model, please retry")
 		selectModel()
-	}
-}
-
-func isUniquePossibility(name string) (bool, string) {
-	hasOccured := false
-	modelName := ""
-	for _, model := range validModels {
-		if strings.HasPrefix(model, name) {
-			if hasOccured {
-				return false, ""
-			}
-			hasOccured = true
-			modelName = model
-		}
-	}
-	return hasOccured, modelName
-}
-
-func modelExists(name string) bool {
-	for _, model := range validModels {
-		if model == name {
-			return true
-		}
-	}
-	return false
+	})
 }

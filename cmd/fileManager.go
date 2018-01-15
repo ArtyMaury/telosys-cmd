@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-func newFile(name string) {
-	path := toPath(name)
-	dir, _ := filepath.Split(name)
+func newFile(name ...string) {
+	path := toPath(name...)
+	dir, _ := filepath.Split(path)
 	os.MkdirAll(dir, 0777)
 	os.Create(path)
 }
