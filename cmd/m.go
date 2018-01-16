@@ -30,6 +30,7 @@ func init() {
 }
 
 func setModel(name string) {
+	validModels = getModels()
 	if isUnique, modelName := isUniquePossibility(name, validModels); isUnique {
 		config.ReadInConfig()
 		config.Set(cfgModel, modelName)

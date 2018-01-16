@@ -29,7 +29,7 @@ func initConfigFile() {
 	if err := config.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", config.ConfigFileUsed())
 	} else {
-		config.Set(cfgHomedir, ".")
+		config.Set(cfgHomedir, toRel(homeDir))
 		config.Set(cfgModel, nil)
 		config.Set(cfgBundle, nil)
 		config.WriteConfig()

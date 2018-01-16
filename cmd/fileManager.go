@@ -40,3 +40,8 @@ func rmExt(file string) string {
 	pieces := strings.Split(file, ".")
 	return strings.Join(pieces[:len(pieces)-1], ".")
 }
+
+func toRel(path string) string {
+	relpath, _ := filepath.Rel(homeDir, path)
+	return relpath
+}

@@ -48,12 +48,3 @@ func initConfig() {
 	config.AutomaticEnv() // read in environment variables that match
 
 }
-
-func checkConfig() {
-	if err := config.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", config.ConfigFileUsed())
-	} else {
-		fmt.Println("It seems the project was not initialized\nPlease run init command")
-		os.Exit(0)
-	}
-}
