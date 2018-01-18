@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -9,9 +10,7 @@ func listSelector(list []string, actionSuccess func(string), actionFailure func(
 	for _, item := range list {
 		fmt.Println(item)
 	}
-	fmt.Print("Choose here: ")
-	var choice string
-	fmt.Scanln(&choice)
+	choice := askUser("Choose here: ")
 	if isUnique, name := isUniquePossibility(choice, list); isUnique {
 		actionSuccess(name)
 	} else {
@@ -41,4 +40,19 @@ func contains(item string, list []string) bool {
 		}
 	}
 	return false
+}
+
+func askUser(question string) string {
+	fmt.Print(question)
+	var choice string
+	fmt.Scanln(&choice)
+	return choice
+}
+
+func askConfirmation() error {
+	choice := askUser("Are you sure? [Y,n] :")
+	if strings.HasPrefix(choice, "n") {
+		return errors.New("Cancelled action")
+	}
+	return nil
 }

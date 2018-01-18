@@ -11,8 +11,11 @@ var genCmd = &cobra.Command{
 	Use:   "gen",
 	Short: "Generates the templates",
 	Long:  "Generates the templates",
+	Args:  cobra.MinimumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("gen called")
+		if askConfirmation() == nil {
+			generateFunction()
+		}
 	},
 }
 
@@ -27,5 +30,9 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// genCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// genCmd.Flags().BoolP("", "t", true, "Help message for toggle")
+}
+
+func generateFunction() {
+	fmt.Println("J'ai généré !")
 }
