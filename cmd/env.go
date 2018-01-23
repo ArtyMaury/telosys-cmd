@@ -7,11 +7,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// confCmd represents the conf command
-var confCmd = &cobra.Command{
-	Use:   "conf",
-	Short: "Display current config",
-	Long:  "Display current config",
+var cfgHomedir = "homeDir"
+var cfgModel = "model"
+var cfgBundle = "bundle"
+var cfgGithub = "github"
+var cfgList = []string{cfgHomedir, cfgModel, cfgBundle, cfgGithub}
+
+// envCmd represents the conf command
+var envCmd = &cobra.Command{
+	Use:   "env",
+	Short: "Display current environment",
+	Long:  "Display current environment",
 	Run: func(cmd *cobra.Command, args []string) {
 		if mapConf, err := getConf(); err == nil {
 			for key, value := range mapConf {
@@ -22,14 +28,14 @@ var confCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(confCmd)
+	rootCmd.AddCommand(envCmd)
 }
 
 func getConf() (map[string]string, error) {
 	confMap := make(map[string]string)
 	err := config.ReadInConfig()
 	if err == nil {
-		for _, conf := range []string{cfgHomedir, cfgBundle, cfgModel} {
+		for _, conf := range cfgList {
 			confMap[conf] = config.GetString(conf)
 		}
 	}
@@ -49,4 +55,14 @@ func checkConfig() error {
 		}
 	}
 	return err
+}
+
+func setConfValue(entry, value string) error {
+	if err := config.ReadInConfig(); err == nil {
+		config.Set(entry, value)
+		config.WriteConfig()
+	} else {
+		return err
+	}
+	return nil
 }

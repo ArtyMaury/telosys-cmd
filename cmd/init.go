@@ -6,10 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgHomedir = "homeDir"
-var cfgModel = "model"
-var cfgBundle = "bundle"
-
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
@@ -32,6 +28,7 @@ func initConfigFile() {
 		config.Set(cfgHomedir, toRel(homeDir))
 		config.Set(cfgModel, nil)
 		config.Set(cfgBundle, nil)
+		config.Set(cfgGithub, "https://github.com/telosys-templates-v3")
 		config.WriteConfig()
 		fmt.Println("Config file successfully created:", config.ConfigFileUsed())
 	}

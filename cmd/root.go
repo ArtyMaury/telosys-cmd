@@ -37,7 +37,8 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	rootCmd.PersistentFlags().StringVar(&homeDir, "home", ".", "home folder (default is .)")
+	rootCmd.PersistentFlags().StringVar(&homeDir, "home", ".", "home folder")
+	rootCmd.PersistentFlags().BoolP("", "y", false, "Skip confirmation requests")
 }
 
 // initConfig reads in config file and ENV variables if set.

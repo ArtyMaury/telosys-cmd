@@ -50,9 +50,12 @@ func askUser(question string) string {
 }
 
 func askConfirmation() error {
-	choice := askUser("Are you sure? [Y,n] :")
-	if strings.HasPrefix(choice, "n") {
-		return errors.New("Cancelled action")
+	skip, _ := rootCmd.PersistentFlags().GetBool("y")
+	if !skip {
+		choice := askUser("Are you sure? [Y/n] :")
+		if strings.HasPrefix(choice, "n") {
+			return errors.New("Cancelled action")
+		}
 	}
 	return nil
 }

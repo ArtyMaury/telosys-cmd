@@ -32,9 +32,7 @@ func init() {
 func setModel(name string) {
 	validModels = getModels()
 	if isUnique, modelName := isUniquePossibility(name, validModels); isUnique {
-		config.ReadInConfig()
-		config.Set(cfgModel, modelName)
-		config.WriteConfig()
+		setConfValue(cfgModel, modelName)
 		fmt.Println("Model successfully set to", name)
 	} else {
 		fmt.Println("Model doesn't exist")
