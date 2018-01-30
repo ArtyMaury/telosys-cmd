@@ -25,11 +25,10 @@ func init() {
 }
 
 func newEntity(name string) {
-	if err := config.ReadInConfig(); err == nil {
-		if model := config.GetString(cfgModel); model != "" {
-			newFile(model+"_model", name+".entity")
-		} else {
-			fmt.Println("No Model selected")
-		}
+	if model := getConfValue(cfgModel); model != "" {
+		newFile(model+"_model", name+".entity")
+		fmt.Println("Entity successfully created")
+	} else {
+		fmt.Println("No Model selected")
 	}
 }

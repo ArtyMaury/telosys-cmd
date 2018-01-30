@@ -26,15 +26,21 @@ func init() {
 }
 
 func getGithubRepo() string {
-	err := config.ReadInConfig()
-	if err == nil {
-		return config.GetString(cfgGithub)
-	}
-	return ""
+	return getConfValue(cfgGithub)
 }
 
 func setGithubRepo(repo string) {
-	reg := regexp.MustCompile(`((https?:\/\/)?(www\.)?github\.com\/)?([\w-]+)`)
-	cleanRepo := reg.FindStringSubmatch(repo)[4]
-	fmt.Println(cleanRepo)
+	user := getGithubUser(repo)
+	setConfValue(cfgGithub, user)
+}
+
+func getGithubUser(repo string) string {
+	reg := regexp.MustCompile(`((https?:\/\/)?(www\.)?github\.com\/)?([^\/]+)`)
+	user := reg.FindStringSubmatch(repo)[4]
+	return user
+}
+
+func getGithubURL(user string) string {
+	url := "https://github.com/" + user + "/"
+	return url
 }

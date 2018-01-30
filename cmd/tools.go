@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
+	"net/http"
 	"strings"
 )
 
@@ -22,7 +25,7 @@ func isUniquePossibility(prefix string, list []string) (bool, string) {
 	hasOccured := false
 	finalName := ""
 	for _, item := range list {
-		if strings.HasPrefix(item, prefix) {
+		if strings.Contains(item, prefix) {
 			if hasOccured {
 				return false, ""
 			}
@@ -58,4 +61,51 @@ func askConfirmation() error {
 		}
 	}
 	return nil
+}
+
+type mapObject map[string]interface{}
+
+func getHttpJsonMap(url string) []map[string]interface{} {
+	var jsonMaps []map[string]interface{}
+	if resp, err := http.Get(url); err == nil {
+		defer resp.Body.Close()
+		dec := json.NewDecoder(resp.Body)
+		_, error1 := dec.Token()
+		if error1 != nil {
+			log.Fatal(err)
+		}
+		for dec.More() {
+			var jsonMap mapObject
+			err := dec.Decode(&jsonMap)
+			if err != nil {
+				log.Fatal(err)
+			}
+			jsonMaps = append(jsonMaps, jsonMap)
+		}
+		_, error1 = dec.Token()
+		if error1 != nil {
+			log.Fatal(err)
+		}
+
+	} else {
+		fmt.Println("Error getting json from url")
+	}
+	return jsonMaps
+}
+
+func getHttpJsonValues(url string, keys ...string) []map[string]interface{} {
+	jsonMaps := getHttpJsonMap(url)
+	var newMaps []map[string]interface{}
+	for _, jsonMap := range jsonMaps {
+		newMap := make(map[string]interface{})
+		for _, key := range keys {
+			keyCuts := strings.Split(key, ".")
+			for _, path := range keyCuts[:len(keyCuts)-1] {
+				jsonMap = jsonMap[path].(map[string]interface{})
+			}
+			newMap[key] = jsonMap[keyCuts[len(keyCuts)-1]]
+		}
+		newMaps = append(newMaps, newMap)
+	}
+	return newMaps
 }

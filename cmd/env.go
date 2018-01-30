@@ -66,3 +66,10 @@ func setConfValue(entry, value string) error {
 	}
 	return nil
 }
+
+func getConfValue(entry string) string {
+	if err := config.ReadInConfig(); err == nil {
+		return config.GetString(entry)
+	}
+	return ""
+}

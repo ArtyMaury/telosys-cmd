@@ -43,7 +43,7 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	homeDir = toAbs(homeDir)
+	homeDir = toAbsPath(homeDir)
 	config.SetConfigFile(toPath(configFile))
 
 	config.AutomaticEnv() // read in environment variables that match

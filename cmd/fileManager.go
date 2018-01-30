@@ -31,7 +31,7 @@ func toPath(pathElmts ...string) string {
 	return abs
 }
 
-func toAbs(pathElmts ...string) string {
+func toAbsPath(pathElmts ...string) string {
 	abs, _ := filepath.Abs(filepath.Join(pathElmts...))
 	return abs
 }
@@ -41,7 +41,7 @@ func rmExt(file string) string {
 	return strings.Join(pieces[:len(pieces)-1], ".")
 }
 
-func toRel(path string) string {
+func toRelPath(path string) string {
 	relpath, _ := filepath.Rel(homeDir, path)
 	return relpath
 }
