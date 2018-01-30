@@ -100,10 +100,11 @@ func getHttpJsonValues(url string, keys ...string) []map[string]interface{} {
 		newMap := make(map[string]interface{})
 		for _, key := range keys {
 			keyCuts := strings.Split(key, ".")
+			jsonMapSub := jsonMap
 			for _, path := range keyCuts[:len(keyCuts)-1] {
-				jsonMap = jsonMap[path].(map[string]interface{})
+				jsonMapSub = jsonMapSub[path].(map[string]interface{})
 			}
-			newMap[key] = jsonMap[keyCuts[len(keyCuts)-1]]
+			newMap[key] = jsonMapSub[keyCuts[len(keyCuts)-1]]
 		}
 		newMaps = append(newMaps, newMap)
 	}
