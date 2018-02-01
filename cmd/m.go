@@ -41,6 +41,7 @@ func setModel(name string) {
 
 func getModels() []string {
 	models := getMatching("*.model")
+	//Check
 	newList := []string{}
 	for _, model := range models {
 		newList = append(newList, rmExt(model))

@@ -39,7 +39,12 @@ func setBundle(name string) {
 }
 
 func getBundles() []string {
-	return []string{"bundle1", "bundle2"}
+	bundles := getMatching("templates/*")
+	newList := []string{}
+	for _, bundle := range bundles {
+		newList = append(newList, rmPath(bundle))
+	}
+	return newList
 }
 
 func selectBundle() {

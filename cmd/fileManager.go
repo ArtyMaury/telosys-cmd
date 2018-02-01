@@ -41,6 +41,11 @@ func rmExt(file string) string {
 	return strings.Join(pieces[:len(pieces)-1], ".")
 }
 
+func rmPath(filepath string) string {
+	path := strings.Split(filepath, "\\")
+	return path[len(path)-1]
+}
+
 func toRelPath(path string) string {
 	relpath, _ := filepath.Rel(homeDir, path)
 	return relpath

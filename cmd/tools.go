@@ -63,8 +63,6 @@ func askConfirmation() error {
 	return nil
 }
 
-type mapObject map[string]interface{}
-
 func getHttpJsonMap(url string) []map[string]interface{} {
 	var jsonMaps []map[string]interface{}
 	if resp, err := http.Get(url); err == nil {
@@ -75,7 +73,7 @@ func getHttpJsonMap(url string) []map[string]interface{} {
 			log.Fatal(err)
 		}
 		for dec.More() {
-			var jsonMap mapObject
+			var jsonMap map[string]interface{}
 			err := dec.Decode(&jsonMap)
 			if err != nil {
 				log.Fatal(err)
@@ -109,4 +107,10 @@ func getHttpJsonValues(url string, keys ...string) []map[string]interface{} {
 		newMaps = append(newMaps, newMap)
 	}
 	return newMaps
+}
+
+func printList(list []string) {
+	for _, value := range list {
+		fmt.Println(value)
+	}
 }

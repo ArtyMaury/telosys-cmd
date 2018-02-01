@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +12,7 @@ var ghListCmd = &cobra.Command{
 	Short: "Get the list of bundles in the github repository",
 	Long:  "Get the list of bundles in the github repository",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(getGithubRepoList())
+		printList(getGithubRepoList())
 	},
 }
 
