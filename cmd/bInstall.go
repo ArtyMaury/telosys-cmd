@@ -1,14 +1,10 @@
 package cmd
 
 import (
-	"archive/zip"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
-	"path/filepath"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
