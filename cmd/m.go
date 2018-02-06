@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var validModels []string
+var availableModels []string
 
 // nmCmd represents the nm command
 var mCmd = &cobra.Command{
@@ -25,13 +25,13 @@ var mCmd = &cobra.Command{
 }
 
 func init() {
-	validModels = getModels()
+	availableModels = getModels()
 	rootCmd.AddCommand(mCmd)
 }
 
 func setModel(name string) {
-	validModels = getModels()
-	if isUnique, modelName := isUniquePossibility(name, validModels); isUnique {
+	availableModels = getModels()
+	if isUnique, modelName := isUniquePossibility(name, availableModels); isUnique {
 		setConfValue(cfgModel, modelName)
 		fmt.Println("Model successfully set to", name)
 	} else {
@@ -41,17 +41,22 @@ func setModel(name string) {
 
 func getModels() []string {
 	models := getMatching("*.model")
-	//Check
 	newList := []string{}
 	for _, model := range models {
-		newList = append(newList, rmExt(model))
+		modelName := rmExt(model)
+		modelFolder := getMatching(modelName + "_model")
+		if len(modelFolder) > 0 {
+			newList = append(newList, modelName)
+		} else {
+			fmt.Println("Model", modelName, "is missing the model folder")
+		}
 	}
 	return newList
 }
 
 func selectModel() {
 	fmt.Println("Here are the available models:")
-	listSelector(validModels, setModel, func() {
+	listSelector(availableModels, setModel, func() {
 		fmt.Println("You didn't pick a correct model, please retry")
 		selectModel()
 	})
