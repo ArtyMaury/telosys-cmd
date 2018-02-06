@@ -8,7 +8,7 @@ import (
 
 var availableBundles []string
 
-// nmCmd represents the nm command
+// bCmd represents the b command
 var bCmd = &cobra.Command{
 	Use:     "b",
 	Aliases: []string{"bundle"},
@@ -30,6 +30,7 @@ func init() {
 }
 
 func setBundle(name string) {
+	//Check if the name passed matches a unique bundle name
 	if isUnique, bundleName := isUniquePossibility(name, availableBundles); isUnique {
 		setConfValue(cfgBundle, bundleName)
 		fmt.Println("Bundle successfully set to", bundleName)
@@ -38,6 +39,7 @@ func setBundle(name string) {
 	}
 }
 
+// Gets the installed bundles
 func getBundles() []string {
 	bundles := getMatching("templates/*")
 	newList := []string{}
@@ -47,6 +49,7 @@ func getBundles() []string {
 	return newList
 }
 
+// Allows the user to select a bundle in the list of available bundles
 func selectBundle() {
 	fmt.Println("Here are the available bundles:")
 	listSelector(availableBundles, setBundle, func() {

@@ -42,6 +42,7 @@ func selectGithubRepo() {
 	})
 }
 
+// Downloads and unzip the github repo in the templates folder
 func installGithubRepo(repo string) {
 	newDir("templates")
 	if err := downloadGithubRepo(repo, toAbsPath("templates", repo+".zip")); err != nil {
@@ -55,6 +56,7 @@ func installGithubRepo(repo string) {
 	os.Remove(toAbsPath("templates", repo+".zip"))
 }
 
+// Downloads the github repo zip in the given folder
 func downloadGithubRepo(repo, filepath string) error {
 	url := "https://github.com/" + getGithubUser(getConfValue(cfgGithub)) + "/" + repo + "/archive/master.zip"
 
@@ -73,63 +75,6 @@ func downloadGithubRepo(repo, filepath string) error {
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
 		return err
-	}
-	return nil
-}
-
-func unzip(src, dest string) error {
-
-	var filenames []string
-
-	r, err := zip.OpenReader(src)
-	if err != nil {
-		return err
-	}
-	defer r.Close()
-
-	for _, f := range r.File {
-
-		rc, err := f.Open()
-		if err != nil {
-			return err
-		}
-		defer rc.Close()
-
-		// Store filename/path for returning and using later on
-		fpath := filepath.Join(dest, f.Name)
-		filenames = append(filenames, fpath)
-
-		if f.FileInfo().IsDir() {
-
-			// Make Folder
-			os.MkdirAll(fpath, os.ModePerm)
-
-		} else {
-
-			// Make File
-			var fdir string
-			if lastIndex := strings.LastIndex(fpath, string(os.PathSeparator)); lastIndex > -1 {
-				fdir = fpath[:lastIndex]
-			}
-
-			err = os.MkdirAll(fdir, os.ModePerm)
-			if err != nil {
-				log.Fatal(err)
-				return err
-			}
-			f, err := os.OpenFile(
-				fpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
-			if err != nil {
-				return err
-			}
-			defer f.Close()
-
-			_, err = io.Copy(f, rc)
-			if err != nil {
-				return err
-			}
-
-		}
 	}
 	return nil
 }

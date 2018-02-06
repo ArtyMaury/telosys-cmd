@@ -10,6 +10,7 @@ import (
 
 var homeDir string
 var configFile = ".telosys-cfg.yaml"
+// config will contain all the config variables
 var config = viper.New()
 
 // rootCmd represents the base command when called without any subcommands
@@ -17,9 +18,6 @@ var rootCmd = &cobra.Command{
 	Use:   "tcmd",
 	Short: "Telosys Cli in Go",
 	Long:  "Telosys Cli in Go",
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -34,9 +32,6 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&homeDir, "home", ".", "home folder")
 	rootCmd.PersistentFlags().BoolP("", "y", false, "Skip confirmation requests")
 }
@@ -47,5 +42,4 @@ func initConfig() {
 	config.SetConfigFile(toPath(configFile))
 
 	config.AutomaticEnv() // read in environment variables that match
-
 }

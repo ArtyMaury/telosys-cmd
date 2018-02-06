@@ -22,6 +22,7 @@ func init() {
 	rootCmd.AddCommand(nmCmd)
 }
 
+// Creates a folder and file for a new model
 func newModel(name string) {
 	modelDir := name + "_model"
 	modelFile := name + ".model"

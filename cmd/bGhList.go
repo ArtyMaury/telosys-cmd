@@ -6,7 +6,7 @@ import (
 
 var githubAPI = "https://api.github.com"
 
-// bGhListCmd represents the gh command
+// bGhListCmd represents the b gh list command
 var bGhListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Get the list of bundles in the github repository",
@@ -20,6 +20,7 @@ func init() {
 	bGhCmd.AddCommand(bGhListCmd)
 }
 
+// Gets the list of repo in the github
 func getGithubRepoList() []string {
 	url := githubAPI + "/users/" + getGithubUser(getConfValue(cfgGithub)) + "/repos"
 	maps := getHttpJsonValues(url, "name")

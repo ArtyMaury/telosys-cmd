@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// bGhCmd represents the gh command
+// bGhCmd represents the b gh command
 var bGhCmd = &cobra.Command{
 	Use:   "gh",
 	Short: "Get or set the github repository for bundles",
@@ -34,6 +34,7 @@ func setGithubRepo(repo string) {
 	setConfValue(cfgGithub, user)
 }
 
+// Finds the github user in a generic url
 func getGithubUser(repo string) string {
 	reg := regexp.MustCompile(`((https?:\/\/)?(www\.)?github\.com\/)?([^\/]+)`)
 	user := reg.FindStringSubmatch(repo)[4]

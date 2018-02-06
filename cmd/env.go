@@ -7,13 +7,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// This file contains functions related to the telosys environment and config file
+
 var cfgHomedir = "homeDir"
 var cfgModel = "model"
 var cfgBundle = "bundle"
 var cfgGithub = "github"
 var cfgList = []string{cfgHomedir, cfgModel, cfgBundle, cfgGithub}
 
-// envCmd represents the conf command
+// envCmd represents the env command
 var envCmd = &cobra.Command{
 	Use:   "env",
 	Short: "Display current environment",
@@ -45,6 +47,7 @@ func getConf() (map[string]string, error) {
 func checkConfig() error {
 	mapConf, err := getConf()
 	if err == nil {
+		//Check if the model in the config file exists
 		if mapConf[cfgModel] != "" {
 			if modelFolder := getMatching(mapConf[cfgModel] + "_model"); len(modelFolder) < 0 {
 				err = errors.New("Model non disponible")
@@ -57,6 +60,7 @@ func checkConfig() error {
 	return err
 }
 
+// setConfValue defines or changes a config variable
 func setConfValue(entry, value string) error {
 	if err := config.ReadInConfig(); err == nil {
 		config.Set(entry, value)

@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+// Set of tools to manage files in Go
+
 func newFile(name ...string) {
 	path := toPath(name...)
 	dir, _ := filepath.Split(path)

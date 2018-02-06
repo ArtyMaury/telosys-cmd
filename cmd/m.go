@@ -8,7 +8,7 @@ import (
 
 var availableModels []string
 
-// nmCmd represents the nm command
+// mCmd represents the m command
 var mCmd = &cobra.Command{
 	Use:     "m",
 	Aliases: []string{"model"},
@@ -39,9 +39,8 @@ func setModel(name string) {
 	}
 }
 
+// Gets the available models in project folder
 func getModels() []string {
-	//TODO init bug
-
 	models := getMatching("*.model")
 	newList := []string{}
 	for _, model := range models {
@@ -56,6 +55,7 @@ func getModels() []string {
 	return newList
 }
 
+// Allows the user to select the model
 func selectModel() {
 	fmt.Println("Here are the available models:")
 	listSelector(availableModels, setModel, func() {

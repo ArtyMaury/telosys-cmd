@@ -24,6 +24,7 @@ func init() {
 	rootCmd.AddCommand(neCmd)
 }
 
+// Creates an entity in the working model
 func newEntity(name string) {
 	if model := getConfValue(cfgModel); model != "" {
 		newFile(model+"_model", name+".entity")

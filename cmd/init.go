@@ -21,6 +21,7 @@ func init() {
 	rootCmd.AddCommand(initCmd)
 }
 
+// Fills the config file for the first use
 func initConfigFile() {
 	if err := config.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", config.ConfigFileUsed())
@@ -34,11 +35,11 @@ func initConfigFile() {
 	}
 }
 
+// Creates the telosys first files and folder (empty)
 func initProjectFiles() {
-	newFile("initFilesOk")
-	// newDir("downloads")
-	// newDir("lib")
-	// newDir("templates")
-	// newFile("databases.dbcfg")
-	// newFile("telosys-tools.cfg")
+	newDir("downloads")
+	newDir("lib")
+	newDir("templates")
+	newFile("databases.dbcfg")
+	newFile("telosys-tools.cfg")
 }

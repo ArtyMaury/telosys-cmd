@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+// Ask the user to choose in a list, and redirecting to the right function in case of a success or a failure
+// It matches the user input with the possibilities
 func listSelector(list []string, actionSuccess func(string), actionFailure func()) {
 	for _, item := range list {
 		fmt.Println(item)
@@ -21,11 +23,12 @@ func listSelector(list []string, actionSuccess func(string), actionFailure func(
 	}
 }
 
-func isUniquePossibility(prefix string, list []string) (bool, string) {
+// Checks if the input matches only one possibility and returns the success boolean and full name
+func isUniquePossibility(input string, list []string) (bool, string) {
 	hasOccured := false
 	finalName := ""
 	for _, item := range list {
-		if strings.Contains(item, prefix) {
+		if strings.Contains(item, input) {
 			if hasOccured {
 				return false, ""
 			}
@@ -36,6 +39,7 @@ func isUniquePossibility(prefix string, list []string) (bool, string) {
 	return hasOccured, finalName
 }
 
+// Tests if an item is included in a list
 func contains(item string, list []string) bool {
 	for _, elt := range list {
 		if item == elt {
@@ -45,6 +49,7 @@ func contains(item string, list []string) bool {
 	return false
 }
 
+// Asks a question to the user annd returns the input
 func askUser(question string) string {
 	fmt.Print(question)
 	var choice string
@@ -52,6 +57,8 @@ func askUser(question string) string {
 	return choice
 }
 
+// Ask if user confirms the action
+// Can be overriden by the -y flag
 func askConfirmation() error {
 	skip, _ := rootCmd.PersistentFlags().GetBool("y")
 	if !skip {
@@ -63,6 +70,7 @@ func askConfirmation() error {
 	return nil
 }
 
+// Returns a list of maps matching a json returned by a url request
 func getHttpJsonMap(url string) []map[string]interface{} {
 	var jsonMaps []map[string]interface{}
 	if resp, err := http.Get(url); err == nil {
@@ -91,6 +99,8 @@ func getHttpJsonMap(url string) []map[string]interface{} {
 	return jsonMaps
 }
 
+// Returns a list of maps matching a json returned by a url request filtered by keys
+// Keys can define a path like in javascript ex: "parent.child.name"
 func getHttpJsonValues(url string, keys ...string) []map[string]interface{} {
 	jsonMaps := getHttpJsonMap(url)
 	var newMaps []map[string]interface{}
@@ -113,4 +123,62 @@ func printList(list []string) {
 	for _, value := range list {
 		fmt.Println(value)
 	}
+}
+
+// Unzip function, credit https://golangcode.com/unzip-files-in-go/
+func unzip(src, dest string) error {
+
+	var filenames []string
+
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	for _, f := range r.File {
+
+		rc, err := f.Open()
+		if err != nil {
+			return err
+		}
+		defer rc.Close()
+
+		// Store filename/path for returning and using later on
+		fpath := filepath.Join(dest, f.Name)
+		filenames = append(filenames, fpath)
+
+		if f.FileInfo().IsDir() {
+
+			// Make Folder
+			os.MkdirAll(fpath, os.ModePerm)
+
+		} else {
+
+			// Make File
+			var fdir string
+			if lastIndex := strings.LastIndex(fpath, string(os.PathSeparator)); lastIndex > -1 {
+				fdir = fpath[:lastIndex]
+			}
+
+			err = os.MkdirAll(fdir, os.ModePerm)
+			if err != nil {
+				log.Fatal(err)
+				return err
+			}
+			f, err := os.OpenFile(
+				fpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+
+			_, err = io.Copy(f, rc)
+			if err != nil {
+				return err
+			}
+
+		}
+	}
+	return nil
 }
