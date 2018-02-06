@@ -7,8 +7,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// ghCmd represents the gh command
-var ghCmd = &cobra.Command{
+// bGhCmd represents the gh command
+var bGhCmd = &cobra.Command{
 	Use:   "gh",
 	Short: "Get or set the github repository for bundles",
 	Long:  "Get or set the github repository for bundles",
@@ -22,7 +22,7 @@ var ghCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(ghCmd)
+	bCmd.AddCommand(bGhCmd)
 }
 
 func getGithubRepo() string {

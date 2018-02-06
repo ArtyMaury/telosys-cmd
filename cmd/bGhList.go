@@ -6,8 +6,8 @@ import (
 
 var githubAPI = "https://api.github.com"
 
-// ghCmd represents the gh command
-var ghListCmd = &cobra.Command{
+// bGhListCmd represents the gh command
+var bGhListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Get the list of bundles in the github repository",
 	Long:  "Get the list of bundles in the github repository",
@@ -17,7 +17,7 @@ var ghListCmd = &cobra.Command{
 }
 
 func init() {
-	ghCmd.AddCommand(ghListCmd)
+	bGhCmd.AddCommand(bGhListCmd)
 }
 
 func getGithubRepoList() []string {

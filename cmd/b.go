@@ -32,7 +32,7 @@ func init() {
 func setBundle(name string) {
 	if isUnique, bundleName := isUniquePossibility(name, availableBundles); isUnique {
 		setConfValue(cfgBundle, bundleName)
-		fmt.Println("Bundle successfully set to", name)
+		fmt.Println("Bundle successfully set to", bundleName)
 	} else {
 		fmt.Println("Bundle doesn't exist")
 	}

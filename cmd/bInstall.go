@@ -15,11 +15,12 @@ import (
 
 var githubMasterZipPattern = "https://github.com/${USER}/${REPO}/archive/master.zip"
 
-// ghCmd represents the gh command
-var ghInstallCmd = &cobra.Command{
-	Use:   "install",
-	Short: "Get the list of bundles in the github repository",
-	Long:  "Get the list of bundles in the github repository",
+// bInstallCmd represents the b install command
+var bInstallCmd = &cobra.Command{
+	Use:     "install",
+	Aliases: []string{"i"},
+	Short:   "Install a bundle from the github repository",
+	Long:    "Install a bundle from the github repository",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			selectGithubRepo()
@@ -30,7 +31,7 @@ var ghInstallCmd = &cobra.Command{
 }
 
 func init() {
-	ghCmd.AddCommand(ghInstallCmd)
+	bCmd.AddCommand(bInstallCmd)
 }
 
 func selectGithubRepo() {
