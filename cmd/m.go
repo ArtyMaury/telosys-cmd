@@ -40,6 +40,8 @@ func setModel(name string) {
 }
 
 func getModels() []string {
+	//TODO init bug
+
 	models := getMatching("*.model")
 	newList := []string{}
 	for _, model := range models {
